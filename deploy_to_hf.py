@@ -16,7 +16,7 @@ def deploy():
         print("Error: Hugging Face Access Token is required. Use --token flag.")
         sys.exit(1)
 
-    project_dir = "/Users/saeedanwar/Desktop/saeed/project/sla_guard"
+    project_dir = os.path.dirname(os.path.abspath(__file__))
     repo_id = f"{username}/sla-guard"
     
     print(f"Connecting to Hugging Face to check/create repository: {repo_id}...")

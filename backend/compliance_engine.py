@@ -4,8 +4,9 @@ import sqlite3
 import urllib.request
 import json
 
-DB_PATH = "/Users/saeedanwar/Desktop/saeed/project/sla_guard/data/customer_accounts.db"
-POLICIES_PATH = "/Users/saeedanwar/Desktop/saeed/project/sla_guard/data/sla_policies.md"
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+DB_PATH = os.path.join(BASE_DIR, "data", "customer_accounts.db")
+POLICIES_PATH = os.path.join(BASE_DIR, "data", "sla_policies.md")
 
 # ---------------------------------------------------------
 # 1. SQLite Database Helper

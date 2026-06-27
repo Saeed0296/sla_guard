@@ -119,7 +119,7 @@ def process_ticket(
 # ---------------------------------------------------------
 # Static File Mounts
 # ---------------------------------------------------------
-STATIC_DIR = "/Users/saeedanwar/Desktop/saeed/project/sla_guard/static"
+STATIC_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "static")
 os.makedirs(STATIC_DIR, exist_ok=True)
 
 # Mount the static directory to serve HTML/CSS/JS at root (/)
