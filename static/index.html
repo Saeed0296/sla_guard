@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLA-Guard Compliance Control Room</title>
+    <meta name="description" content="Enterprise Customer Support SLA compliance auditing and multi-agent consensus control room.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="logo.png">
+</head>
+<body>
+    <!-- Cursor Glow Background Effect -->
+    <div id="cursor-glow" aria-hidden="true"></div>
+    <div class="noise-overlay" aria-hidden="true"></div>
+
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand-area">
+                <div class="avatar-frame">
+                    <span class="avatar-glow"></span>
+                    <img src="logo.png" alt="SLA-Guard Logo" class="avatar-img-placeholder" style="object-fit: cover; border: none; padding: 2px;">
+                </div>
+                <div class="brand-text">
+                    <h1>SLA-Guard</h1>
+                    <span class="brand-tagline">Compliance Control Room</span>
+                </div>
+            </div>
+            <div class="system-status">
+                <span class="status-indicator-glow"></span>
+                <span class="status-indicator"></span>
+                <span class="status-text">Consensus API Active</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="app-container">
+        <!-- LEFT COLUMN: Input & Configuration Console -->
+        <section class="console-panel glass-card" id="left-console">
+            <h2>Operations Console</h2>
+            
+            <div class="form-group">
+                <label for="customer-select">Select Customer Profile</label>
+                <select id="customer-select" class="styled-select">
+                    <option value="" disabled selected>Loading customer accounts...</option>
+                </select>
+            </div>
+
+            <!-- Customer Details Subcard -->
+            <div id="customer-details-card" class="details-card hidden">
+                <div class="detail-row">
+                    <span class="detail-label">Plan Name:</span>
+                    <span id="card-plan" class="detail-val">--</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Service Tier:</span>
+                    <span id="card-tier" class="badge">--</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">SLA Target:</span>
+                    <span id="card-sla" class="detail-val">--</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Max Refund Cap:</span>
+                    <span id="card-cap" class="detail-val text-accent">--</span>
+                </div>
+            </div>
+
+            <!-- SLA Threshold Sliders -->
+            <div class="sliders-section">
+                <h3>Consensus Boundaries</h3>
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label for="far-slider">Compliance Strictness (FAR)</label>
+                        <span id="far-val" class="slider-num-val">80%</span>
+                    </div>
+                    <input type="range" id="far-slider" min="0" max="1" step="0.05" value="0.80" class="styled-range">
+                    <p class="slider-hint">Higher values enforce stricter security & cap checks (minimized compliance leaks).</p>
+                </div>
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label for="frr-slider">Friction Tolerance (FRR)</label>
+                        <span id="frr-val" class="slider-num-val">20%</span>
+                    </div>
+                    <input type="range" id="frr-slider" min="0" max="1" step="0.05" value="0.20" class="styled-range">
+                    <p class="slider-hint">Controls the allowed margin for synonym matching & minor policy exceptions.</p>
+                </div>
+            </div>
+
+            <!-- Support Ticket Query Templates -->
+            <div class="templates-section">
+                <h3>Incident Templates</h3>
+                <div class="button-grid">
+                    <button type="button" class="btn btn-secondary btn-sm template-btn" data-ticket="outage">
+                        Silver SLA Claim ($200)
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm template-btn" data-ticket="bronze">
+                        Bronze Outage claim
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm template-btn" data-ticket="injection">
+                        Override Attempt (Hack)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Input Textarea -->
+            <div class="form-group">
+                <label for="ticket-input">Customer Ticket / Incident Details</label>
+                <textarea id="ticket-input" placeholder="Paste customer support query or describe the outage claims..."></textarea>
+            </div>
+
+            <button type="button" id="submit-btn" class="btn btn-primary btn-block">
+                <span>Run Consensus Verification</span>
+                <span class="btn-shine"></span>
+            </button>
+        </section>
+
+        <!-- RIGHT COLUMN: Interactive Audit Board -->
+        <section class="board-panel" id="right-board">
+            <!-- Pipeline Progress Visualizer -->
+            <div class="pipeline-card glass-card">
+                <h3>Verification Pipeline Process</h3>
+                <div class="pipeline-steps">
+                    <div class="step" id="step-vector">
+                        <div class="step-icon">1</div>
+                        <div class="step-label">Policy Retriever</div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step" id="step-sql">
+                        <div class="step-icon">2</div>
+                        <div class="step-label">SQL Account Verifier</div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step" id="step-guard">
+                        <div class="step-icon">3</div>
+                        <div class="step-label">Policy Guardrail</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gauges Card -->
+            <div class="gauges-card glass-card">
+                <h3>Compliance Council Safety Gauges</h3>
+                <div class="gauges-grid">
+                    <div class="gauge-container">
+                        <div class="gauge-svg-wrap">
+                            <svg viewBox="0 0 100 100" class="gauge">
+                                <circle cx="50" cy="50" r="40" class="gauge-bg" />
+                                <circle cx="50" cy="50" r="40" class="gauge-fill" id="gauge-sla-fill" style="stroke-dasharray: 251.2; stroke-dashoffset: 251.2;" />
+                            </svg>
+                            <span class="gauge-value" id="gauge-sla-val">0%</span>
+                        </div>
+                        <span class="gauge-label">SLA Alignment</span>
+                    </div>
+                    
+                    <div class="gauge-container">
+                        <div class="gauge-svg-wrap">
+                            <svg viewBox="0 0 100 100" class="gauge">
+                                <circle cx="50" cy="50" r="40" class="gauge-bg" />
+                                <circle cx="50" cy="50" r="40" class="gauge-fill" id="gauge-billing-fill" style="stroke-dasharray: 251.2; stroke-dashoffset: 251.2;" />
+                            </svg>
+                            <span class="gauge-value" id="gauge-billing-val">0%</span>
+                        </div>
+                        <span class="gauge-label">Billing Compliance</span>
+                    </div>
+
+                    <div class="gauge-container">
+                        <div class="gauge-svg-wrap">
+                            <svg viewBox="0 0 100 100" class="gauge">
+                                <circle cx="50" cy="50" r="40" class="gauge-bg" />
+                                <circle cx="50" cy="50" r="40" class="gauge-fill" id="gauge-safety-fill" style="stroke-dasharray: 251.2; stroke-dashoffset: 251.2;" />
+                            </svg>
+                            <span class="gauge-value" id="gauge-safety-val">0%</span>
+                        </div>
+                        <span class="gauge-label">Security & Guard</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Decision Box -->
+            <div class="decision-card glass-card" id="decision-box">
+                <div class="decision-header">
+                    <h3>Council Audit Decision</h3>
+                    <div class="consensus-display">
+                        <span class="consensus-lbl">Consensus Score:</span>
+                        <span id="score-display">0.00 / 1.00</span>
+                    </div>
+                </div>
+                <div class="decision-status" id="decision-status-box">
+                    <span id="status-tag" class="status-empty">AWAITING TRIGGER</span>
+                    <span id="iterations-tag" class="iterations-count hidden">Iterations: 1</span>
+                </div>
+                
+                <!-- Dynamic Self-Correction Indicator -->
+                <div id="correction-loop-alert" class="correction-alert hidden">
+                    <span class="spinner-small"></span>
+                    <span id="correction-alert-text">Self-Correction Active: Adjusting draft response...</span>
+                </div>
+
+                <div class="violations-console hidden" id="violations-console">
+                    <h4>Policy Violations Detected:</h4>
+                    <ul id="violations-list"></ul>
+                </div>
+
+                <div class="error-console hidden" id="error-console">
+                    <h4>System Audit Failure</h4>
+                    <p id="error-message"></p>
+                </div>
+            </div>
+
+            <!-- Tabs Section -->
+            <div class="tabs-card glass-card">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="response">Audited Draft Response</button>
+                    <button class="tab-btn" data-tab="logs">Self-Correction Log</button>
+                    <button class="tab-btn" data-tab="catalog">Database & Policies Catalog</button>
+                </div>
+                
+                <div class="tabs-content">
+                    <!-- Tab 1: Response -->
+                    <div class="tab-pane active" id="tab-response">
+                        <div class="response-display">
+                            <p id="response-text" class="placeholder-text">Execute the consensus validation to generate the audited compliant support message.</p>
+                            <button id="copy-btn" class="btn btn-secondary btn-sm hidden">Copy Response</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab 2: Logs -->
+                    <div class="tab-pane" id="tab-logs">
+                        <div class="logs-container" id="logs-list">
+                            <p class="placeholder-text">Self-correction iteration records will be logged here.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab 3: Catalog -->
+                    <div class="tab-pane" id="tab-catalog">
+                        <div class="catalog-grid">
+                            <div class="catalog-section">
+                                <h4>Customer SQL Profile Row</h4>
+                                <pre id="sql-profile-display" class="code-box">Database record not loaded.</pre>
+                            </div>
+                            <div class="catalog-section">
+                                <h4>Retrieved SLA Clauses</h4>
+                                <pre id="sla-clauses-display" class="code-box">Retrieved paragraphs will load here.</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="footer-container">
+            <p>&copy; 2026 SLA-Guard Compliance System. All rights reserved.</p>
+            <p>Designed for portfolio validation and automated policy grounding testing.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

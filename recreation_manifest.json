@@ -1,0 +1,22 @@
+{
+  "project_name": "SLA-Guard Compliance Control Room",
+  "github_repository": "https://github.com/Saeed0296/sla_guard.git",
+  "huggingface_space": "https://huggingface.co/spaces/Saeed0296/sla-guard",
+  "database_info": {
+    "type": "SQLite3",
+    "file_path": "data/customer_accounts.db",
+    "tables": ["customers", "subscriptions", "tickets_history"]
+  },
+  "cloud_api_settings": {
+    "environment_variable": "HF_API_TOKEN",
+    "llama_endpoint": "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct",
+    "mistral_endpoint": "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2"
+  },
+  "recreation_steps": [
+    "1. Clone codebase: git clone https://github.com/Saeed0296/sla_guard.git",
+    "2. Setup virtual environment and run 'pip install fastapi uvicorn pillow'",
+    "3. Set HF_API_TOKEN environment variable (optional for live API calls)",
+    "4. Start Application: Run 'bash run_server.sh' or 'python backend/main.py'",
+    "5. View in browser at http://127.0.0.1:8080"
+  ]
+}

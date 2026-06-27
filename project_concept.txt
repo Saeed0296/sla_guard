@@ -1,0 +1,110 @@
+================================================================================
+SLA-GUARD: MULTI-AGENT COMPLIANCE & GROUNDING ENGINE
+PROJECT CONCEPT & DESIGN BREAKDOWN
+================================================================================
+
+--------------------------------------------------------------------------------
+1. THE PROBLEM: "The Hallucinating Support Bot" (Why it exists)
+--------------------------------------------------------------------------------
+Generative AI copilots and support bots are being widely deployed by businesses 
+to automatically answer customer queries, retrieve policies, and issue billing 
+credits. However, because Large Language Models (LLMs) are probabilistic, they 
+suffer from hallucinations, lack mathematical boundary reasoning, and are 
+susceptible to prompt injections.
+
+If an autonomous AI support bot makes an unauthorized or incorrect commitment 
+to a customer, the company is held legally and financially liable.
+
+REAL-LIFE EXAMPLES OF THE PROBLEM:
+*   Air Canada Chatbot Lawsuit (2024): 
+    An Air Canada customer queried a support chatbot about bereavement fares. 
+    The chatbot hallucinated a policy, promising a retroactive refund that 
+    violated Air Canada's actual corporate rules. The customer sued. The Canadian 
+    court ruled that the airline is legally bound by the promises made by its 
+    AI chatbot, forcing the airline to pay.
+*   DPD Delivery Chatbot Defacement (2024): 
+    A customer frustrated with a package delivery successfully prompt-injected 
+    DPD's support bot, forcing it to swear, tell jokes, write poems criticizing 
+    its own company, and bypass standard delivery status verification checks.
+
+WHY THIS IS A PROBLEM:
+Without a strict verification layer checking LLM drafts against structured 
+databases (such as actual user tiers, contract terms, billing systems) and 
+unstructured legal safety policies, AI agents will leak revenue, violate 
+corporate rules, bypass payment walls, and create legal liabilities.
+
+--------------------------------------------------------------------------------
+2. HOW WE SOLVE IT: Multi-Agent Consensus Verification
+--------------------------------------------------------------------------------
+We solve this by placing a "Compliance Council" (SLA-Guard) as a secure firewall 
+between the LLM support generator and the customer. Every drafted response is 
+intercepted and must pass three parallel verification gates:
+
+*   Gate 1 (Semantic Policy Retriever): Parses unstructured SLA contract and 
+    policy files (Markdown/PDFs) to find text clauses matching the ticket context.
+*   Gate 2 (SQL Account Verifier): Executes a secure query against the actual 
+    structured relational customer ledger (SQLite database) to check the 
+    customer's subscription tier, active plan uptime SLA, and maximum allowed 
+    monthly refund caps.
+*   Gate 3 (Policy Guardrail Inspector): A separate safety LLM (Mistral) audits 
+    the drafted response for security anomalies (prompt injection), verifies 
+    downtime math, and cross-checks the draft refund against SQL cap limits.
+
+REAL-LIFE EXAMPLE OF THE SOLUTION:
+*   A customer on a "Silver" subscription plan (monthly refund cap = $50.00) 
+    experiences a 5-hour server outage and submits a ticket demanding a $200.00 
+    refund.
+*   The LLM Generator (Llama-3), trying to satisfy the customer, drafts an 
+    overly apologetic response: "I am sorry for the outage. I have processed a 
+    $200.00 refund to your account."
+*   Before this message is sent, SLA-Guard intercepts it. The SQL Verifier reports 
+    a maximum allowed cap of $50.00. The Guardrail Inspector flags a violation: 
+    "REFUND_EXCEEDS_CAP: Draft refund ($200.00) exceeds maximum cap ($50.00) 
+    for Silver tier."
+*   Auto-Refinement Loop: The compliance engine feeds the violation logs back 
+    to the generator: "Error: Your previous draft offered $200, which exceeds 
+    the cap of $50. Please rewrite."
+*   Self-Healing: The generator automatically rewrites the response: "We apologize 
+    for the downtime. Under your Silver plan terms, we have processed a credit of 
+    $50.00 to your account."
+*   The consensus score rises to 1.00. The ticket is marked "APPROVED & COMPLIANT" 
+    and dispatched.
+
+--------------------------------------------------------------------------------
+3. HOW THE END SOLUTION WORKS
+--------------------------------------------------------------------------------
+1.  The support operator selects a customer profile and types the ticket.
+2.  The backend runs the three council verification steps concurrently, displaying 
+    the active pipeline steps visually in the dashboard.
+3.  The consensus logic calculates an overall compliance score based on table 
+    alignment, safety check pass rate, and syntax validity.
+4.  A variable slider for "Compliance Strictness (FAR)" and "Friction Tolerance 
+    (FRR)" controls the decision threshold.
+5.  Vibrant compliance gauges (SLA, Billing, and Security) animate from 0% to 
+    100% based on the council scores.
+6.  The operator can view the finished Audited response, read the step-by-step 
+    self-correction logs, and inspect the raw SQL database row and matched 
+    clauses side-by-side.
+
+--------------------------------------------------------------------------------
+4. HOW WE HOST IT FOR FREE (Leveraging MURA Project Tactics)
+--------------------------------------------------------------------------------
+In our previous MURA project, we had 3.8 GB of weights, which exceeded Hugging 
+Face Space's free tier limit of 1 GB. We bypassed this by:
+*   Deploying the static UI on GitHub Pages (completely free global CDN).
+*   Uploading only the 3 generic model weights (~466 MB) to Hugging Face Spaces.
+*   Implementing fallback routing on the backend API to handle specific categories.
+
+In SLA-Guard, we optimize resources and cost even further to maintain a 
+"Zero-Local-Footprint" and completely free deployment:
+*   GitHub Pages: Hosts the static HTML/CSS/JS frontend dashboard.
+*   Hugging Face Spaces (Free CPU Basic Tier): Serves the containerized FastAPI 
+    app. This app acts as the light-weight API coordinator, holding the 
+    lightweight SQLite database (`customer_accounts.db`) and local markdown files.
+*   Serverless Inference APIs: Instead of downloading and running heavy LLMs 
+    locally (requiring 15+ GB of RAM and storage), the FastAPI backend routes 
+    queries to Hugging Face Serverless APIs or Groq APIs to perform Llama-3 
+    generation and Mistral auditing in milliseconds for free.
+*   Local simulation fallback: In case API keys are missing or offline, the 
+    backend automatically runs a high-quality rule-based local simulator to 
+    ensure the dashboard is 100% functional and interactive instantly upon cloning.
